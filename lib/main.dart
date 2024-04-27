@@ -1,4 +1,5 @@
 import 'package:domain_driven_design/presentation/ui/home/home_page.dart';
+import 'package:domain_driven_design/presentation/ui/search/search_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,6 +14,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: HomePage(),
+      routes: {
+        '/search': (context) => SearchPage(),
+        '/home': (context) => HomePage(),
+      },
     );
   }
 }
