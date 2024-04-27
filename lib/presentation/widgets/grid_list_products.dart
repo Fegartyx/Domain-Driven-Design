@@ -1,13 +1,15 @@
+import 'package:domain_driven_design/domain/model/product.dart';
 import 'package:flutter/material.dart';
 
 class GridListProducts extends StatelessWidget {
-  const GridListProducts({super.key});
+  final Product product;
+  const GridListProducts({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: GridView.builder(
-        itemCount: 5,
+        itemCount: product.products.length,
         gridDelegate:
             SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
         itemBuilder: (context, index) {

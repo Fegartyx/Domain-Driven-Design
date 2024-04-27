@@ -47,7 +47,7 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                 ],
               ),
-              GridListProducts(),
+              // GridListProducts(),
             ],
           ),
         ),

@@ -14,7 +14,7 @@ class Category {
   String categoryToJson(List<String> data) =>
       json.encode(List<dynamic>.from(data.map((x) => x)));
 
-  factory Category.fromJson(Map<String, dynamic> json) => Category(
-        categories: List<String>.from(json["categories"].map((x) => x)),
+  factory Category.fromJson(List<dynamic> json) => Category(
+        categories: List<String>.from(json),
       );
 }
