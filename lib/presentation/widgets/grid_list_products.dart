@@ -26,19 +26,19 @@ class GridListProducts extends StatelessWidget {
         ),
         itemBuilder: (context, index) {
           final data = product.products[index];
-          if (index + 1 < product.products.length) {
+          if (index < product.products.length + 1) {
             return Container(
               margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
               child: Column(
                 children: [
                   ClipRRect(
-                    child: Image.network(
-                      scale: 2.5,
-                      "${data.images[0]}",
-                    ),
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10),
+                    ),
+                    child: Image.network(
+                      scale: 2.5,
+                      "${data.images[0]}",
                     ),
                   ),
                   const SizedBox(
@@ -64,9 +64,13 @@ class GridListProducts extends StatelessWidget {
               ),
             );
           } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            if (product.products.length < product.limit) {
+              return Text("No More Data To Load");
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
           }
         },
       ),
