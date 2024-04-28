@@ -21,13 +21,13 @@ class GridListProducts extends StatelessWidget {
         controller: controller,
         itemCount: product.products.length,
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 400,
-          childAspectRatio: 4 / 5,
+          maxCrossAxisExtent: 350,
+          childAspectRatio: 2 / 2.3,
         ),
         itemBuilder: (context, index) {
           final data = product.products[index];
           if (index < product.products.length + 1) {
-            return Container(
+            return Card(
               margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
               child: Column(
                 children: [
@@ -37,7 +37,9 @@ class GridListProducts extends StatelessWidget {
                       topRight: Radius.circular(10),
                     ),
                     child: Image.network(
-                      scale: 2.5,
+                      fit: BoxFit.fill,
+                      height: 200,
+                      width: double.infinity,
                       "${data.images[0]}",
                     ),
                   ),
