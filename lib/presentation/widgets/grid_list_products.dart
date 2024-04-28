@@ -20,25 +20,28 @@ class GridListProducts extends StatelessWidget {
       child: GridView.builder(
         controller: controller,
         itemCount: product.products.length,
-        gridDelegate:
-            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 400,
+          childAspectRatio: 4 / 5,
+        ),
         itemBuilder: (context, index) {
           final data = product.products[index];
           if (index + 1 < product.products.length) {
-            return Card(
-              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            return Container(
+              margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
               child: Column(
                 children: [
                   ClipRRect(
                     child: Image.network(
+                      scale: 2.5,
                       "${data.images[0]}",
                     ),
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Padding(
@@ -61,7 +64,7 @@ class GridListProducts extends StatelessWidget {
               ),
             );
           } else {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
