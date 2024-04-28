@@ -16,6 +16,23 @@ class _HomePageState extends State<HomePage> {
   final listChoices = ['All', 'Mobile', 'Laptop', 'Tablet', 'TV'];
   String? choice;
   int? idSelected;
+  final ScrollController controller = ScrollController();
+  int? limit;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // controller.addListener(() {
+    //   if (controller.position.maxScrollExtent == controller.offset) {
+    //     debugPrint(controller.position.maxScrollExtent.toString());
+    //     debugPrint(controller.offset.toString());
+    //     setState(() {
+    //       limit = limit! + 10;
+    //     });
+    //   }
+    // });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,24 +97,52 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             SizedBox(height: 10),
-            FutureBuilder(
-              future: ProductRemote().getProducts(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else {
-                  if (snapshot.hasData) {
-                    return GridListProducts(
-                      product: snapshot.data!,
+            if (choice == null) ...[
+              FutureBuilder(
+                future: ProductRemote().getProducts(limit),
+                builder: (context, snapshot) {
+                  debugPrint("Data: ${snapshot.data?.products.length}");
+                  debugPrint("Limit: $limit");
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(),
                     );
                   } else {
-                    return SizedBox();
+                    if (snapshot.hasData) {
+                      return GridListProducts(
+                        onDataReceived: (p0) {
+                          setState(() {
+                            limit = p0;
+                          });
+                        },
+                        product: snapshot.data!,
+                      );
+                    } else {
+                      return SizedBox();
+                    }
                   }
-                }
-              },
-            ),
+                },
+              ),
+            ] else ...[
+              FutureBuilder(
+                future: ProductRemote().getProductByCategory(choice!),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    if (snapshot.hasData) {
+                      return GridListProducts(
+                        product: snapshot.data!,
+                      );
+                    } else {
+                      return SizedBox();
+                    }
+                  }
+                },
+              )
+            ]
           ],
         ),
       ),

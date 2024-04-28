@@ -1,3 +1,5 @@
+import 'package:domain_driven_design/helper/Debouncer.dart';
+import 'package:domain_driven_design/infrastructure/datasource/remote/product_remote.dart';
 import 'package:domain_driven_design/presentation/widgets/grid_list_products.dart';
 import 'package:flutter/material.dart';
 
@@ -9,10 +11,11 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  final Debouncer debouncer = Debouncer(milliseconds: 1000);
+  TextEditingController searchBar = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController searchBar = TextEditingController();
-
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -33,21 +36,41 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                   Expanded(
                     child: TextField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Search here',
                         hintStyle: TextStyle(color: Colors.grey),
                       ),
                       onChanged: (value) {
-                        setState(() {
-                          searchBar.text = value;
+                        debouncer.run(() {
+                          setState(() {
+                            searchBar.text = value;
+                          });
                         });
                       },
                     ),
                   ),
                 ],
               ),
-              // GridListProducts(),
+              if (searchBar.text.isNotEmpty)
+                FutureBuilder(
+                  future: ProductRemote().getProductByName(searchBar.text),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
+                      if (snapshot.hasData) {
+                        return GridListProducts(
+                          product: snapshot.data!,
+                        );
+                      } else {
+                        return SizedBox();
+                      }
+                    }
+                  },
+                ),
             ],
           ),
         ),
