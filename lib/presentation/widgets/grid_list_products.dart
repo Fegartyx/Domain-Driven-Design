@@ -1,4 +1,5 @@
 import 'package:domain_driven_design/domain/model/product.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class GridListProducts extends StatelessWidget {
@@ -20,10 +21,11 @@ class GridListProducts extends StatelessWidget {
       child: GridView.builder(
         controller: controller,
         itemCount: product.products.length,
-        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 350,
           // childAspectRatio: 2 / 2.3, for tablet
-          childAspectRatio: 2 / 4.5,
+          childAspectRatio:
+              MediaQuery.sizeOf(context).width < 600 ? 2 / 4.5 : 2 / 2.3,
         ),
         itemBuilder: (context, index) {
           final data = product.products[index];
