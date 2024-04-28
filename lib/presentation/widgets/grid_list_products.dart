@@ -22,7 +22,8 @@ class GridListProducts extends StatelessWidget {
         itemCount: product.products.length,
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 350,
-          childAspectRatio: 2 / 2.3,
+          // childAspectRatio: 2 / 2.3, for tablet
+          childAspectRatio: 2 / 4.5,
         ),
         itemBuilder: (context, index) {
           final data = product.products[index];
