@@ -1,4 +1,5 @@
 import 'package:domain_driven_design/domain/model/product.dart';
+import 'package:domain_driven_design/presentation/ui/detail/product_detail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -30,42 +31,50 @@ class GridListProducts extends StatelessWidget {
         itemBuilder: (context, index) {
           final data = product.products[index];
           if (index < product.products.length + 1) {
-            return Card(
-              margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-              child: Column(
-                children: [
-                  ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10),
+            return InkWell(
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProductDetail(product: data),
+                  )),
+              child: Card(
+                margin:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                child: Column(
+                  children: [
+                    ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
+                      ),
+                      child: Image.network(
+                        fit: BoxFit.fill,
+                        height: 200,
+                        width: double.infinity,
+                        "${data.images[0]}",
+                      ),
                     ),
-                    child: Image.network(
-                      fit: BoxFit.fill,
-                      height: 200,
-                      width: double.infinity,
-                      "${data.images[0]}",
+                    const SizedBox(
+                      height: 15,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('${data.title}'),
-                        Text(
-                          "${data.description}",
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                        ),
-                        Text("Price: ${data.price}"),
-                        Text("Category: ${data.category}"),
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('${data.title}'),
+                          Text(
+                            "${data.description}",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                          ),
+                          Text("Price: ${data.price}"),
+                          Text("Category: ${data.category}"),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
           } else {
